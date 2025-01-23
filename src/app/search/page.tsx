@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// Tipos e interfaces
 interface UnsplashImage {
   id: string;
   urls: {
@@ -21,7 +21,7 @@ interface UnsplashImage {
   description: string | null;
 }
 
-const SearchPage = () => {
+const SearchResults = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q");
 
@@ -32,6 +32,7 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = useState(false); // Para evitar múltiples solicitudes simultáneas
 
+  // Fetch de imágenes
   const fetchImages = async () => {
     if (!searchQuery) return;
 
@@ -68,7 +69,7 @@ const SearchPage = () => {
   }, [searchQuery, page]);
 
   const handleScroll = useCallback(() => {
-    if (isLoading || isFetching) return; // Evitar solicitudes adicionales mientras cargamos imágenes
+    if (isLoading || isFetching) return;
 
     const bottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
     if (bottom) {
@@ -84,110 +85,14 @@ const SearchPage = () => {
     };
   }, [handleScroll]);
 
-  // Manejar las teclas para navegar entre las imágenes
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") {
-      navigateToNextImage();
-    } else if (e.key === "ArrowLeft") {
-      navigateToPreviousImage();
-    }
-  };
-
-  useEffect(() => {
-    if (selectedImage) {
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
-  }, [selectedImage]);
-
-  const navigateToNextImage = () => {
-    if (!selectedImage) return;
-    const currentIndex = images.findIndex((img) => img.id === selectedImage.id);
-    if (currentIndex < images.length - 1) {
-      setSelectedImage(images[currentIndex + 1]);
-    }
-  };
-
-  const navigateToPreviousImage = () => {
-    if (!selectedImage) return;
-    const currentIndex = images.findIndex((img) => img.id === selectedImage.id);
-    if (currentIndex > 0) {
-      setSelectedImage(images[currentIndex - 1]);
-    }
-  };
-
-  // Modal para mostrar la imagen en grande
-  const ImageModal = () => {
-    if (!selectedImage) return null;
-
-    return (
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
-        onClick={() => setSelectedImage(null)}
-      >
-        <div 
-          className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden"
-          onClick={e => e.stopPropagation()}
-        >
-          {/* Botón de cerrar */}
-          <button 
-            className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75 transition-opacity"
-            onClick={() => setSelectedImage(null)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          {/* Imagen en grande */}
-          <div className="relative w-full" style={{ height: '70vh' }}>
-            <Image
-              src={selectedImage.urls.regular}
-              alt={selectedImage.alt_description || "Imagen seleccionada"}
-              fill
-              className="object-contain"
-              unoptimized
-            />
-          </div>
-
-          {/* Información de la imagen */}
-          <div className="p-4 bg-white">
-            <p className="text-gray-700">
-              Fotografía por: {selectedImage.user.name} (@{selectedImage.user.username})
-            </p>
-            {selectedImage.description && (
-              <p className="text-gray-600 mt-2">{selectedImage.description}</p>
-            )}
-          </div>
-
-          {/* Navegación por teclas */}
-          <div className="absolute top-1/2 left-0 p-4 cursor-pointer z-10" onClick={navigateToPreviousImage}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </div>
-          <div className="absolute top-1/2 right-0 p-4 cursor-pointer z-10" onClick={navigateToNextImage}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Cabecera de resultados */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">
-          {searchQuery ? `Resultados para "${searchQuery}"` : 'Búsqueda'}
+          {searchQuery ? `Resultados para "${searchQuery}"` : "Búsqueda"}
         </h1>
-        <p className="text-gray-600">
-          {images.length} imágenes encontradas
-        </p>
+        <p className="text-gray-600">{images.length} imágenes encontradas</p>
       </div>
 
       {/* Estado de carga */}
@@ -207,12 +112,12 @@ const SearchPage = () => {
       {/* Grid de imágenes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {images.map((image) => (
-          <div 
-            key={image.id} 
+          <div
+            key={image.id}
             className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
             onClick={() => setSelectedImage(image)}
           >
-            <div className="relative aspect-w-1 aspect-h-1 w-full" style={{ height: '200px' }}>
+            <div className="relative aspect-w-1 aspect-h-1 w-full" style={{ height: "200px" }}>
               <Image
                 src={image.urls.small}
                 alt={image.alt_description || "Imagen sin descripción"}
@@ -232,13 +137,14 @@ const SearchPage = () => {
           <p className="text-gray-600">Intenta con otros términos de búsqueda</p>
         </div>
       )}
-
-      {/* Modal de imagen */}
-      <ImageModal />
     </div>
   );
 };
 
+const SearchPage = () => (
+  <Suspense fallback={<div>Cargando búsqueda...</div>}>
+    <SearchResults />
+  </Suspense>
+);
+
 export default SearchPage;
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-/* eslint-disable @typescript-eslint/no-explicit-any */
