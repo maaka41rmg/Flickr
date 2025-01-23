@@ -50,7 +50,7 @@ const NavbarLoggedIn = () => {
   const handleLogout = () => {
     auth.signOut().then(() => {
       console.log("Sesión cerrada");
-      router.push("/login");
+      router.push("/auth/login");
     });
   };
 
