@@ -11,6 +11,14 @@ import Image from "next/image";
 import Link from "next/link";
 /* eslint-disable @typescript-eslint/no-unused-vars*/
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+// Extensión de tipos para que TypeScript reconozca la propiedad "handleRecaptcha"
+declare global {
+  interface Window {
+    handleRecaptcha: () => void;
+  }
+}
+
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -165,5 +173,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-/* eslint-disable @typescript-eslint/no-explicit-any */
