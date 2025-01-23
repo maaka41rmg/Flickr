@@ -1,33 +1,34 @@
 "use client";
+
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth"; // Importa el tipo User de Firebase
 /* eslint-disable @typescript-eslint/no-unused-vars*/
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null); // Permite tanto User como null
   const router = useRouter();
-   const [userPhoto, setUserPhoto] = useState(null); // Para la foto de perfil
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
         router.push("/"); // Redirige al login si no está autenticado
       } else {
-        setUser(currentUser);
+        setUser(currentUser); // Establece el usuario autenticado
         setLoading(false);
       }
     });
 
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribe(); // Limpia el listener cuando el componente se desmonta
+  }, [router]);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push("/auth/register"); // Redirige al login después de cerrar sesión
+      router.push("/auth/register"); // Redirige al registro después de cerrar sesión
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
@@ -62,28 +63,28 @@ export default function Dashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="bg-white shadow-md rounded-md p-6">
           <h2 className="text-2xl font-semibold mb-4 text-black">
-            Bienvenido, {user.displayName || "Usuario"}!
+            Bienvenido, {user?.displayName || "Usuario"}!
           </h2>
           <div className="flex items-center space-x-4">
-            {user.photoURL ? (
-              <image
-                src={userPhoto }
+            {user?.photoURL ? (
+              <img
+                src={user.photoURL}
                 alt="Foto de perfil"
                 className="w-16 h-16 rounded-full shadow-md"
               />
             ) : (
               <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">
                 <span className="text-xl font-bold">
-                  {user.displayName?.[0] || "U"}
+                  {user?.displayName?.[0] || "U"}
                 </span>
               </div>
             )}
             <div>
               <p className="text-gray-700">
-                <strong>Nombre:</strong> {user.displayName || "N/A"}
+                <strong>Nombre:</strong> {user?.displayName || "N/A"}
               </p>
               <p className="text-gray-700">
-                <strong>Email:</strong> {user.email || "N/A"}
+                <strong>Email:</strong> {user?.email || "N/A"}
               </p>
             </div>
           </div>
