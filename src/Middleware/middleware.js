@@ -6,7 +6,7 @@ export function middleware(request) {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const protectedRoutes = ["/dashboard"]; // Rutas protegidas
+  const protectedRoutes = ["/inicio", "/dashboard"]; // Rutas protegidas
   const url = request.nextUrl.pathname;
 
   if (protectedRoutes.includes(url)) {

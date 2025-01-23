@@ -60,17 +60,26 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#232323] px-8 py-4 flex items-center justify-between border-b border-gray-700">
-      {/* Logo */}
-      <div className="flex items-center">
-        <Link href="/inicio">
-          <Image
-            src="https://combo.staticflickr.com/66a031f9fc343c5e42d965ca/66b3f60bcd82f68f2716490a_flickr%20horz%20logo-light.png"
-            alt="Flickr Logo"
-            width={300} // Aumenta el tamaño del logo
-            height={100}
-          />
-        </Link>
-      </div>
+     {/* Logo */}
+<div className="flex items-center">
+  <button
+    onClick={() => {
+      if (isAuthenticated) {
+        router.push("/inicio");
+      } else {
+        router.push("/auth/login");
+      }
+    }}
+    className="focus:outline-none"
+  >
+    <Image
+      src="https://combo.staticflickr.com/66a031f9fc343c5e42d965ca/66b3f60bcd82f68f2716490a_flickr%20horz%20logo-light.png"
+      alt="Flickr Logo"
+      width={300} // Aumenta el tamaño del logo
+      height={100}
+    />
+  </button>
+</div>
 
       {/* Links de navegación */}
       <div className="hidden md:flex space-x-6 text-gray-300 text-base uppercase font-semibold">
