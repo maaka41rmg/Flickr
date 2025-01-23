@@ -14,5 +14,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-filters'), // Asegúrate de incluir este plugin.
+  ],
 } satisfies Config;
