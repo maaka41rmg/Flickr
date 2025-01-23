@@ -1,11 +1,12 @@
 "use client";
+
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { auth } from "@/firebase/config"; // Importa tu configuración de Firebase
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const NavbarLoggedIn = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -25,7 +26,7 @@ const NavbarLoggedIn = () => {
     // Escuchar el estado de autenticación del usuario
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUserPhoto(user.photoURL); // Establecer la foto de perfil del usuario autenticado
+        setUserPhoto(user.photoURL || null); // Establecer la foto de perfil del usuario autenticado
       } else {
         setUserPhoto(null);
       }
@@ -35,7 +36,7 @@ const NavbarLoggedIn = () => {
   }, []);
 
   // Manejar la búsqueda
-  const handleSearch = (e) => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
@@ -43,7 +44,7 @@ const NavbarLoggedIn = () => {
   };
 
   // Manejar cambios en el input de búsqueda
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
@@ -75,26 +76,26 @@ const NavbarLoggedIn = () => {
       </div>
 
       <div className="hidden md:flex space-x-6">
-  {/* Link para redirigir a /dashboard */}
-  <Link href="/dashboard" className="hover:text-blue-500">
-    Tú
-  </Link>
+        {/* Link para redirigir a /dashboard */}
+        <Link href="/dashboard" className="hover:text-blue-500">
+          Tú
+        </Link>
 
-  {/* Link para redirigir a /Explorar */}
-  <Link href="/Explorar" className="hover:text-blue-500">
-    Explorar
-  </Link>
+        {/* Link para redirigir a /Explorar */}
+        <Link href="/Explorar" className="hover:text-blue-500">
+          Explorar
+        </Link>
 
-  {/* Enlace de adorno para Impresiones */}
-  <a href="#" className="hover:text-blue-500">
-    Impresiones
-  </a>
+        {/* Enlace de adorno para Impresiones */}
+        <a href="#" className="hover:text-blue-500">
+          Impresiones
+        </a>
 
-  {/* Enlace de adorno para Hazte Pro */}
-  <a href="#" className="hover:text-blue-500">
-    Hazte Pro
-  </a>
-</div>
+        {/* Enlace de adorno para Hazte Pro */}
+        <a href="#" className="hover:text-blue-500">
+          Hazte Pro
+        </a>
+      </div>
 
       {/* Barra de búsqueda */}
       <form onSubmit={handleSearch} className="flex items-center">
@@ -181,5 +182,3 @@ const NavbarLoggedIn = () => {
 };
 
 export default NavbarLoggedIn;
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-/* eslint-disable @typescript-eslint/no-explicit-any */
