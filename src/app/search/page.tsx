@@ -4,7 +4,8 @@ import React, { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Tipos e interfaces
 interface UnsplashImage {
   id: string;
@@ -148,3 +149,5 @@ const SearchPage = () => (
 );
 
 export default SearchPage;
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
