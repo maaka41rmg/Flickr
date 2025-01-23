@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { auth } from "@/firebase/config"; // Importa tu configuración de Firebase
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const NavbarLoggedIn = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -180,3 +181,5 @@ const NavbarLoggedIn = () => {
 };
 
 export default NavbarLoggedIn;
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */

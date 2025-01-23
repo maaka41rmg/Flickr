@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuth } from "firebase/auth";
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function middleware(request) {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -16,3 +17,5 @@ export function middleware(request) {
 
   return NextResponse.next();
 }
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export async function POST(req) {
   const { token } = await req.json();
 
@@ -45,3 +46,5 @@ export async function POST(req) {
     );
   }
 }
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */

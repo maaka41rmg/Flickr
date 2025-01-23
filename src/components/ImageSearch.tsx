@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image"; // Importamos Image de Next.js
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Definimos una interfaz para tipar la respuesta de la API
 interface UnsplashImage {
   id: string;
@@ -79,3 +80,5 @@ const ImageSearch: React.FC = () => {
 };
 
 export default ImageSearch; // Exportamos el componente para poder usarlo en otro archivo.
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */

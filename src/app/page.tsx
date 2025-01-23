@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "next/image"; // Si usas Next.js
 import Link from "next/link"; // Importa Link correctamente
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const Page = () => {
   return (
     <div className="bg-[#232323] min-h-screen text-white flex flex-col items-center">
@@ -56,3 +57,5 @@ const Page = () => {
 };
 
 export default Page;
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */

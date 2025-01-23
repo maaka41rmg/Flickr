@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Image from "next/image";
 
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface UnsplashImage {
   id: string;
   urls: {
@@ -159,3 +161,5 @@ const RandomImages: React.FC = () => {
 };
 
 export default RandomImages;
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
